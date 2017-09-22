@@ -22,10 +22,13 @@ exports.getAccount = (identifier) => {
 };
 
 exports.createOrUpdateAccount = (phoneNumber, eventID) => {
+  console.log('about to create or update account', phoneNumber, eventID);
   let query = { phoneNumber };
   let update = { $push: { events: eventID } };
   let options = { new: true, upsert: true };
-  return Account.findOneAndUpdate(query, update, options);
+  return Account.findOneAndUpdate(query, update, options)
+  .then(acct => console.log('created or updated acct', JSON.stringify(acct)))
+  .catch(err => console.log('FAILED TO created acct', err))
 };
 
 exports.createNewItem = (itemName, quantity = 1, price, eventID) => {
